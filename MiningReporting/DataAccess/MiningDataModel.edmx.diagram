@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a185867cd7484ba9a02b34bad898a9bf" Name="Diagram1">
+        <EntityTypeShape EntityType="MiningModel.Balance" Width="1.5" PointX="5.25" PointY="4.25" />
+        <EntityTypeShape EntityType="MiningModel.Location" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="MiningModel.Payment" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MiningModel.PoolReading" Width="1.5" PointX="3" PointY="2.375" />
+        <EntityTypeShape EntityType="MiningModel.Pool" Width="1.5" PointX="0.75" PointY="2.875" />
+        <AssociationConnector Association="MiningModel.FK_Balances_PoolReadings" />
+        <AssociationConnector Association="MiningModel.FK_PoolReadings_Pools" />
+        <EntityTypeShape EntityType="MiningModel.PoolWorkerReading" Width="1.5" PointX="5.25" PointY="0.75" />
+        <AssociationConnector Association="MiningModel.FK_PoolWorkerReadings_PoolReadings" />
+        <EntityTypeShape EntityType="MiningModel.PoolStat" Width="1.5" PointX="7.375" PointY="3.75" />
+        <EntityTypeShape EntityType="MiningModel.Rig" Width="1.5" PointX="5.375" PointY="7.75" />
+        <EntityTypeShape EntityType="MiningModel.RigReading" Width="1.5" PointX="10.625" PointY="0.875" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

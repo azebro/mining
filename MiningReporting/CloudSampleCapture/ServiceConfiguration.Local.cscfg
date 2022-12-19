@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="CloudSampleCapture" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2013-10.2.2">
+  <Role name="PoolDataCollector">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="adam" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEDWXV1pYFfugTaZieLkuasAwDQYJKoZIhvcNAQEBBQAEggEAKM1n3fLJez1Glleli4SR9rQHhq26sJrINUj+8+0mf+O32e76wkQG6MYJcEQt9vE7eYFUvbjn/GzqHKudTby3J6alVMM+Y5RoUR7IUGestIlKaIQ8L+TK6QH2viGcM7KIrvtg89J8V8YB1l5axlIP4EkDjDYLEWwlp57BgZPG6lZJ5iHdqkwzyH7hhC9S/8jM26vEFJtNZnzMaGpFU1CczHyF+S9J+Tjoh8IlOyY+gM41DdaNfJ9n8g+7cRmR9uHFLkFVh/dD3bYJ5fUtbwWmaSAc6nhccAjA7ea9dxkV4m7lpMvj6/cLWVRuHeO5wnjHcNe9oviySB35HtnlZnD8nzAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECEryuxxszoC9gBB9q/MdxsMyY+NCp95HgcJT" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2015-04-02T23:59:59.0000000+01:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="3998365370999F0FF372445D33202125FDB58407" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>

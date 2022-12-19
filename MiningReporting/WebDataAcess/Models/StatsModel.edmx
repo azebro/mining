@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MiningModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Balances">
+          <Key>
+            <PropertyRef Name="RowId" />
+          </Key>
+          <Property Name="RowId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReadingId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Sent" Type="float" />
+          <Property Name="Confirmed" Type="float" />
+          <Property Name="Unconverted" Type="float" />
+        </EntityType>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Payments">
+          <Key>
+            <PropertyRef Name="TxId" />
+          </Key>
+          <Property Name="RowId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TxId" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="TransactionDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PoolReadings">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="RowId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReadingId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Reading" Type="float" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="Pool" Type="int" Nullable="false" />
+          <Property Name="Error" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Pools">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="PoolWorkerReadings">
+          <Key>
+            <PropertyRef Name="RowId" />
+          </Key>
+          <Property Name="RowId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReadingId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Worker" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Hashrate" Type="float" Nullable="false" />
+          <Property Name="LastSeen" Type="datetime" Nullable="false" />
+          <Property Name="StaleRate" Type="float" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Balances_PoolReadings">
+          <End Role="PoolReadings" Type="Self.PoolReadings" Multiplicity="1" />
+          <End Role="Balances" Type="Self.Balances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PoolReadings">
+              <PropertyRef Name="ReadingId" />
+            </Principal>
+            <Dependent Role="Balances">
+              <PropertyRef Name="ReadingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PoolReadings_Pools">
+          <End Role="Pools" Type="Self.Pools" Multiplicity="1" />
+          <End Role="PoolReadings" Type="Self.PoolReadings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pools">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PoolReadings">
+              <PropertyRef Name="Pool" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PoolWorkerReadings_PoolReadings">
+          <End Role="PoolReadings" Type="Self.PoolReadings" Multiplicity="1" />
+          <End Role="PoolWorkerReadings" Type="Self.PoolWorkerReadings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PoolReadings">
+              <PropertyRef Name="ReadingId" />
+            </Principal>
+            <Dependent Role="PoolWorkerReadings">
+              <PropertyRef Name="ReadingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MiningModelStoreContainer">
+          <EntitySet Name="Balances" EntityType="Self.Balances" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Locations" EntityType="Self.Locations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PoolReadings" EntityType="Self.PoolReadings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pools" EntityType="Self.Pools" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PoolWorkerReadings" EntityType="Self.PoolWorkerReadings" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Balances_PoolReadings" Association="Self.FK_Balances_PoolReadings">
+            <End Role="PoolReadings" EntitySet="PoolReadings" />
+            <End Role="Balances" EntitySet="Balances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PoolReadings_Pools" Association="Self.FK_PoolReadings_Pools">
+            <End Role="Pools" EntitySet="Pools" />
+            <End Role="PoolReadings" EntitySet="PoolReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PoolWorkerReadings_PoolReadings" Association="Self.FK_PoolWorkerReadings_PoolReadings">
+            <End Role="PoolReadings" EntitySet="PoolReadings" />
+            <End Role="PoolWorkerReadings" EntitySet="PoolWorkerReadings" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MiningModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Balance">
+          <Key>
+            <PropertyRef Name="RowId" />
+          </Key>
+          <Property Name="RowId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReadingId" Type="Guid" Nullable="false" />
+          <Property Name="Sent" Type="Double" />
+          <Property Name="Confirmed" Type="Double" />
+          <Property Name="Unconverted" Type="Double" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="TxId" />
+          </Key>
+          <Property Name="RowId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TxId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="PoolReading">
+          <Key>
+            <PropertyRef Name="ReadingId" />
+          </Key>
+          <Property Name="RowId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReadingId" Type="Guid" Nullable="false" />
+          <Property Name="Reading" Type="Double" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Pool" Type="Int32" Nullable="false" />
+          <Property Name="Error" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Pool">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PoolWorkerReading">
+          <Key>
+            <PropertyRef Name="RowId" />
+          </Key>
+          <Property Name="RowId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReadingId" Type="Guid" Nullable="false" />
+          <Property Name="Worker" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Hashrate" Type="Double" Nullable="false" />
+          <Property Name="LastSeen" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StaleRate" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="MiningEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Balances" EntityType="Self.Balance" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="PoolReadings" EntityType="Self.PoolReading" />
+          <EntitySet Name="Pools" EntityType="Self.Pool" />
+          <EntitySet Name="PoolWorkerReadings" EntityType="Self.PoolWorkerReading" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MiningModelStoreContainer" CdmEntityContainer="MiningEntities">
+          <EntitySetMapping Name="Balances">
+            <EntityTypeMapping TypeName="MiningModel.Balance">
+              <MappingFragment StoreEntitySet="Balances">
+                <ScalarProperty Name="RowId" ColumnName="RowId" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+                <ScalarProperty Name="Sent" ColumnName="Sent" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+                <ScalarProperty Name="Unconverted" ColumnName="Unconverted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="MiningModel.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="MiningModel.Payment">
+              <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="RowId" ColumnName="RowId" />
+                <ScalarProperty Name="TxId" ColumnName="TxId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PoolReadings">
+            <EntityTypeMapping TypeName="MiningModel.PoolReading">
+              <MappingFragment StoreEntitySet="PoolReadings">
+                <ScalarProperty Name="RowId" ColumnName="RowId" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+                <ScalarProperty Name="Reading" ColumnName="Reading" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Pool" ColumnName="Pool" />
+                <ScalarProperty Name="Error" ColumnName="Error" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pools">
+            <EntityTypeMapping TypeName="MiningModel.Pool">
+              <MappingFragment StoreEntitySet="Pools">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PoolWorkerReadings">
+            <EntityTypeMapping TypeName="MiningModel.PoolWorkerReading">
+              <MappingFragment StoreEntitySet="PoolWorkerReadings">
+                <ScalarProperty Name="RowId" ColumnName="RowId" />
+                <ScalarProperty Name="ReadingId" ColumnName="ReadingId" />
+                <ScalarProperty Name="Worker" ColumnName="Worker" />
+                <ScalarProperty Name="Hashrate" ColumnName="Hashrate" />
+                <ScalarProperty Name="LastSeen" ColumnName="LastSeen" />
+                <ScalarProperty Name="StaleRate" ColumnName="StaleRate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
